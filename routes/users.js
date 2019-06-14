@@ -1,5 +1,6 @@
 const router = require('koa-router')()
 const dbHelper = require('../helper/dbHelper')
+const encryptionUtil = require('../utils/encryptionUtil')
 const User = dbHelper.getModel('User')
 
 router.prefix('/users')
@@ -37,10 +38,6 @@ router.post('/login', async (ctx, next) => {
     .catch(err => {
       ctx.body = err
     })
-})
-
-router.get('/bar', function(ctx, next) {
-  ctx.body = 'this is a users/bar response'
 })
 
 module.exports = router
