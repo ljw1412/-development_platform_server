@@ -6,6 +6,9 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
+// Initialize the database 初始化数据库
+require('./serves/database')
+
 const index = require('./routes/index')
 const users = require('./routes/users')
 
