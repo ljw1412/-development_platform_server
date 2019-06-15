@@ -1,32 +1,41 @@
 const router = require('koa-router')()
-const dbHelper = require('../helper/dbHelper')
+const mongoose = require('mongoose')
+const User = mongoose.model('User')
 const encryptionUtil = require('../utils/encryptionUtil')
-const User = dbHelper.getModel('User')
 
 router.prefix('/users')
 
-router.get('/add', async (ctx, next) => {
-  const { username, password, email } = ctx.query
+/**
+ * 检查是否存在
+ */
+router.get('/check', async ctx => {
+  const { prop, value } = ctx.query
+  const count = await User.countDocuments({ [prop]: value })
+  ctx.body = { isExists: !!count }
+})
+
+/**
+ * 注册
+ */
+router.post('/register', async (ctx, next) => {
+  const { username, password, email } = ctx.request.body
   if (username && password && email) {
     const users = await User.find({ $or: [{ username }, { email: username }] })
-    // await User.findOne({ username })
-    //   .then(user =>
-    //     user
-    //       ? Promise.reject({ error: `username ${username} is exits` })
-    //       : User.create({ username, password })
-    //   )
-    //   .then(() => {
-    //     ctx.body = { message: `user ${username} create success.` }
-    //   })
-    //   .catch(err => {
-    //     ctx.body = err
-    //   })
+    if (users.length) {
+      ctx.body = { error: 'username or email has been used' }
+    } else {
+      await User.create({ username, password, email })
+      ctx.body = { message: `user ${username} create success.` }
+    }
   } else {
-    ctx.body = { error: 'plase input username or password' }
+    ctx.body = { error: 'plase input username, password or email' }
     // ctx.throw(500, `plase input username or password`)
   }
 })
 
+/**
+ * 登陆
+ */
 router.post('/login', async (ctx, next) => {
   const { username, password } = ctx.request.body
   const user = await User.findOne({ username })
