@@ -5,7 +5,8 @@ module.exports = new Schema(
   {
     username: { type: String },
     email: { type: String },
-    password: { type: String }
+    password: { type: String },
+    salt: { type: String }
   },
   { versionKey: false, id: true }
 )

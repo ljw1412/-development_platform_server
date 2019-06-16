@@ -24,7 +24,13 @@ router.post('/register', async (ctx, next) => {
     if (users.length) {
       ctx.body = { error: 'username or email has been used' }
     } else {
-      await User.create({ username, password, email })
+      const { result, salt } = encryptionUtil.aesEncrypt(password)
+      await User.create({
+        username,
+        password: result,
+        salt,
+        email
+      })
       ctx.body = { message: `user ${username} create success.` }
     }
   } else {
@@ -40,7 +46,8 @@ router.post('/login', async (ctx, next) => {
   const { username, password } = ctx.request.body
   const user = await User.findOne({ username })
   if (user) {
-    if (user.password === password) ctx.body = user
+    const { result } = encryptionUtil.aesEncrypt(password, user.salt)
+    if (user.password === result) ctx.body = user
     else ctx.body = { error: 'password error' }
   } else {
     ctx.body = { error: 'username or password error' }
