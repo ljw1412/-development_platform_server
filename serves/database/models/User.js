@@ -54,7 +54,9 @@ const login = async function(loginName, password) {
   // 将输入的密码与找到的用户的盐进行加密后 与数据库中加密的密码进行比对
   const { result } = encryptionUtil.aesEncrypt(password, user.salt)
   if (user.password === result) {
-    const token = jwt.sign({ id: user.id }, config.SECRET_KEY)
+    const token = jwt.sign({ id: user.id }, config.SECRET_KEY, {
+      expiresIn: '7 days'
+    })
     return {
       id: user.id,
       username: user.username,
