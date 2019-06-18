@@ -17,6 +17,8 @@ const UserSchema = new Schema(
     password: { type: String },
     // 密码盐
     salt: { type: String },
+    // 身份
+    role: { type: String },
     // 创建日期
     createDateTime: {
       type: String,

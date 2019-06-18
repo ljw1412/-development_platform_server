@@ -15,6 +15,7 @@ require('./serves/database')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
+const api = require('./routes/api')
 
 // error handler
 onerror(app)
@@ -50,6 +51,7 @@ app.use(apiError)
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(api.routes(), api.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

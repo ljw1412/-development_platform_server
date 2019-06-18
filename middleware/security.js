@@ -16,12 +16,13 @@ const isInWhitelist = (path, method) => {
 module.exports = async (ctx, next) => {
   if (isInWhitelist(ctx.path, ctx.method)) return await next()
 
-  const auth = ctx.headers.auth
+  const auth = ctx.headers.authorization
   if (!auth) {
     return ctx.throw(401, 'Unauthorized.')
   }
+  let user = {}
   try {
-    const user = jwt.verify(auth, config.SECRET_KEY)
+    user = jwt.verify(auth, config.SECRET_KEY)
   } catch (error) {
     return ctx.throw(403, 'Invalid token.')
   }
