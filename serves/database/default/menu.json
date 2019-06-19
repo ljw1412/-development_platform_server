@@ -1,0 +1,28 @@
+[
+  {
+    "icon": "el-icon-s-home",
+    "image": "",
+    "title": "首页",
+    "route": { "name": "main" }
+  },
+  {
+    "icon": "el-icon-setting",
+    "image": "",
+    "title": "平台设置",
+    "route": { "name": "setting" },
+    "children": [
+      {
+        "icon": "el-icon-setting",
+        "image": "",
+        "title": "用户设置",
+        "route": { "name": "userEdit" }
+      },
+      {
+        "icon": "el-icon-setting",
+        "image": "",
+        "title": "菜单设置",
+        "route": { "name": "menuEdit" }
+      }
+    ]
+  }
+]

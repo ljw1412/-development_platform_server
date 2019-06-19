@@ -38,8 +38,6 @@ const UserSchema = new Schema(
   { versionKey: false }
 )
 
-module.exports = UserSchema
-
 // 重写 mongoose 的默认方法会造成无法预料的结果。
 // 不要在自定义方法中使用 ES6 箭头函数，会造成 this 指向错误。
 
@@ -101,3 +99,5 @@ const register = async function(inputUser) {
 }
 
 Object.assign(UserSchema.statics, { login, checkExists, register })
+
+const User = mongoose.model('User', UserSchema)
