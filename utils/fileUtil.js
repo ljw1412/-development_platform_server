@@ -20,7 +20,7 @@ const listDir = async (path, displayHidden = false) => {
       fileStats.name = name
       fileList.push(fileStats)
     }
-    return { fileList }
+    return fileList
   } catch (err) {
     console.log(err.message)
     let error = ''
