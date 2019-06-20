@@ -13,10 +13,6 @@ const config = require('./config')
 // Initialize the database 初始化数据库
 require('./serves/database')
 
-const index = require('./routes/index')
-const users = require('./routes/users')
-const api = require('./routes/api')
-
 // error handler
 onerror(app)
 
@@ -44,14 +40,13 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
-
-app.use(security)
+// 请求安全性
+// app.use(security)
+// 接口异常自动500
 app.use(apiError)
 
 // routes
-app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
-app.use(api.routes(), api.allowedMethods())
+require('./routesLoader')(app, __dirname + '/routes')
 
 // error-handling
 app.on('error', (err, ctx) => {
