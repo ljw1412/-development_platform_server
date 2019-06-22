@@ -12,15 +12,20 @@ const listDir = async (path, displayHidden = false) => {
     const filenameList = await fsp.readdir(path)
     const fileList = []
     for (let i = 0; i < filenameList.length; i++) {
-      const name = filenameList[i]
-      // 过滤隐藏文件
-      if (!displayHidden && /^\./.test(name)) continue
-      const fileStats = await fsp.stat(pth.join(path, name))
-      fileStats.type = getFileType(fileStats)
-      fileStats.name = name
-      fileList.push(fileStats)
+      try {
+        const name = filenameList[i]
+        // 过滤隐藏文件
+        if (!displayHidden && /^\./.test(name)) continue
+        const fileStats = await fsp.stat(pth.join(path, name))
+        fileStats.type = getFileType(fileStats)
+        fileStats.name = name
+        fileList.push(fileStats)
+      } catch (error) {}
     }
-    return fileList
+    return [
+      ...fileList.filter(item => item.type === 'dir'),
+      ...fileList.filter(item => item.type === 'file')
+    ]
   } catch (err) {
     console.log(err.message)
     let error = ''
