@@ -13,7 +13,7 @@ const MenuSchema = new Schema(
 )
 
 const init = async function() {
-  const count = await this.countDocuments({ title: /设置/ })
+  const count = await this.countDocuments({})
   if (!count) {
     const setting = require('../default/menu.json')
     setting.map(item => {
@@ -26,5 +26,13 @@ const init = async function() {
   }
 }
 
-Object.assign(MenuSchema.statics, { init })
+/**
+ * 重新生成默认的菜单栏(用于菜单栏的更新)
+ */
+const reset = async function() {
+  await this.remove({})
+  await this.init()
+}
+
+Object.assign(MenuSchema.statics, { init, reset })
 const Menu = mongoose.model('Menu', MenuSchema)

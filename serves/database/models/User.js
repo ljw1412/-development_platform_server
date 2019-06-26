@@ -84,7 +84,7 @@ const checkExists = async function(prop, value) {
 const register = async function(inputUser) {
   const { username, password, email } = inputUser
   if (!username || !password || !email)
-    return { error: 'plase input username, password or email.' }
+    return { error: 'please input username, password or email.' }
 
   const users = await this.find({ $or: [{ username }, { email }] })
   if (users.length) return { error: 'username or email has been used.' }
@@ -100,6 +100,28 @@ const register = async function(inputUser) {
   return { message: `user ${username} create success.` }
 }
 
-Object.assign(UserSchema.statics, { login, checkExists, register })
+// 用户分页模糊搜索列表
+const listByKeyword = async function(page, size, keyword) {
+  if (!page || !size) return { error: 'Missing field "page" or "size".' }
+  const users = await this.find(
+    {
+      $or: [
+        { username: new RegExp(keyword, 'i') },
+        { email: new RegExp(keyword, 'i') }
+      ]
+    },
+    { password: 0, salt: 0 }
+  )
+  console.log(users)
+
+  return users
+}
+
+Object.assign(UserSchema.statics, {
+  login,
+  checkExists,
+  register,
+  listByKeyword
+})
 
 const User = mongoose.model('User', UserSchema)

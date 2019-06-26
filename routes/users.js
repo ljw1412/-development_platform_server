@@ -33,4 +33,10 @@ router.post('/login', async (ctx, next) => {
   ctx.body = result
 })
 
+router.get('/list', async ctx => {
+  const { size, index, keyword } = ctx.query
+  const result = await User.listByKeyword(size, index, keyword)
+  ctx.body = result
+})
+
 module.exports = router

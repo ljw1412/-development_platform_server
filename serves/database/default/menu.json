@@ -14,7 +14,7 @@
       {
         "icon": "el-icon-user",
         "image": "",
-        "title": "用户设置",
+        "title": "用户管理",
         "route": { "name": "userEdit" }
       },
       {
