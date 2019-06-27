@@ -9,10 +9,26 @@ const MenuSchema = new Schema(
     route: { path: String, name: String },
     children: []
   },
-  { versionKey: false }
+  {
+    versionKey: false,
+    toObject: {
+      getters: true,
+      transform: function(doc, ret, options) {
+        delete ret._id
+        return ret
+      }
+    },
+    toJSON: {
+      getters: true,
+      transform: function(doc, ret, options) {
+        delete ret._id
+        return ret
+      }
+    }
+  }
 )
 
-const init = async function() {
+const initData = async function() {
   const count = await this.countDocuments({})
   if (!count) {
     const setting = require('../default/menu.json')
@@ -23,6 +39,7 @@ const init = async function() {
       return item
     })
     const data = await this.create(setting)
+    console.log('[完成]', '菜单初始化', '\n', data)
   }
 }
 
@@ -31,8 +48,10 @@ const init = async function() {
  */
 const reset = async function() {
   await this.remove({})
-  await this.init()
+  await this.initData()
 }
 
-Object.assign(MenuSchema.statics, { init, reset })
+Object.assign(MenuSchema.statics, { initData, reset })
 const Menu = mongoose.model('Menu', MenuSchema)
+
+Menu.initData()

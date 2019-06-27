@@ -13,5 +13,6 @@ db.once('open', () => {
   console.log('mongodb opened.')
 })
 
-require('./models/User')
 require('./models/Menu')
+require('./models/Role')
+require('./models/User')

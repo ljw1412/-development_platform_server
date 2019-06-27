@@ -1,5 +1,6 @@
 const mongoose = require('mongoose'),
-  Schema = mongoose.Schema
+  Schema = mongoose.Schema,
+  ObjectId = Schema.Types.ObjectId
 const moment = require('moment')
 const config = require('../../../config')
 const encryptionUtil = require('../../../utils/encryptionUtil')
@@ -18,7 +19,7 @@ const UserSchema = new Schema(
     // 密码盐
     salt: { type: String },
     // 身份
-    role: { type: String },
+    role: { type: ObjectId, ref: 'Role' },
     // 创建日期
     createDateTime: {
       type: String,
@@ -35,7 +36,23 @@ const UserSchema = new Schema(
       default: '1970-01-01 00:00:00'
     }
   },
-  { versionKey: false }
+  {
+    versionKey: false,
+    toObject: {
+      getters: true,
+      transform: function(doc, ret, options) {
+        delete ret._id
+        return ret
+      }
+    },
+    toJSON: {
+      getters: true,
+      transform: function(doc, ret, options) {
+        delete ret._id
+        return ret
+      }
+    }
+  }
 )
 
 // 重写 mongoose 的默认方法会造成无法预料的结果。
@@ -82,7 +99,7 @@ const checkExists = async function(prop, value) {
  * @param inputUser :Object 输入的用户对象
  */
 const register = async function(inputUser) {
-  const { username, password, email } = inputUser
+  const { username, password, email, role } = inputUser
   if (!username || !password || !email)
     return { error: 'please input username, password or email.' }
 
@@ -91,12 +108,9 @@ const register = async function(inputUser) {
 
   // 密码加密
   const { result, salt } = encryptionUtil.aesEncrypt(password)
-  await this.create({
-    username,
-    password: result,
-    salt,
-    email
-  })
+  const createUser = { username, password: result, salt, email }
+  if (role) createUser.role = role
+  await this.create(createUser)
   return { message: `user ${username} create success.` }
 }
 
@@ -112,8 +126,6 @@ const listByKeyword = async function(page, size, keyword) {
     },
     { password: 0, salt: 0 }
   )
-  console.log(users)
-
   return users
 }
 
