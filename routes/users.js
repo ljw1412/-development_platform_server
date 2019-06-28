@@ -63,7 +63,10 @@ router.get('/list', async ctx => {
   ctx.body = users.map(user => {
     user = user.toObject()
     const role = roles.find(item => item.id == user.role)
-    if (role) user.role = role.name
+    if (role) {
+      user.roleName = role.name
+      user.isSuperAdmin = role.tag === 'superadmin'
+    }
     return user
   })
 })

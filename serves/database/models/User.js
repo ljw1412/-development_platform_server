@@ -115,6 +115,21 @@ const register = async function(inputUser) {
   return { message: `user ${username} create success.` }
 }
 
+/**
+ * 更新用户 无 id 则创建
+ * @param inputUser 输入的用户对象
+ */
+const updateUser = async function(inputUser) {
+  const { id, username, password, email, nickname, role } = inputUser
+  if (id) {
+    const user = { username, email, nickname, role }
+    if (password) user.password = password
+    return this.findByIdAndUpdate(id, user)
+  } else {
+    return this.register(inputUser)
+  }
+}
+
 // 用户分页模糊搜索列表
 const listByKeyword = async function(page, size, keyword) {
   if (!page || !size) return { error: 'Missing field "page" or "size".' }
@@ -122,23 +137,13 @@ const listByKeyword = async function(page, size, keyword) {
     {
       $or: [
         { username: new RegExp(keyword, 'i') },
-        { email: new RegExp(keyword, 'i') }
+        { email: new RegExp(keyword, 'i') },
+        { nickname: new RegExp(keyword, 'i') }
       ]
     },
     { password: 0, salt: 0 }
   )
   return users
-}
-
-/**
- * 更新用户 无 id 则创建
- * @param inputUser 输入的用户对象
- */
-const updateUser = async function(inputUser) {
-  if (inputUser.id) {
-  } else {
-    return this.register(inputUser)
-  }
 }
 
 Object.assign(UserSchema.statics, {
