@@ -99,7 +99,7 @@ const checkExists = async function(prop, value) {
  * @param inputUser :Object 输入的用户对象
  */
 const register = async function(inputUser) {
-  const { username, password, email, role } = inputUser
+  const { username, password, email, role, nickname } = inputUser
   if (!username || !password || !email)
     return { error: 'please input username, password or email.' }
 
@@ -110,6 +110,7 @@ const register = async function(inputUser) {
   const { result, salt } = encryptionUtil.aesEncrypt(password)
   const createUser = { username, password: result, salt, email }
   if (role) createUser.role = role
+  if (nickname) createUser.nickname = nickname
   await this.create(createUser)
   return { message: `user ${username} create success.` }
 }
@@ -129,10 +130,22 @@ const listByKeyword = async function(page, size, keyword) {
   return users
 }
 
+/**
+ * 更新用户 无 id 则创建
+ * @param inputUser 输入的用户对象
+ */
+const updateUser = async function(inputUser) {
+  if (inputUser.id) {
+  } else {
+    return this.register(inputUser)
+  }
+}
+
 Object.assign(UserSchema.statics, {
   login,
   checkExists,
   register,
+  updateUser,
   listByKeyword
 })
 

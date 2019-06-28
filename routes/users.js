@@ -26,6 +26,25 @@ router.put('/register', async (ctx, next) => {
 })
 
 /**
+ * 更新
+ */
+router.put('/update', async ctx => {
+  const result = await User.updateUser(ctx.request.body)
+  ctx.body = result
+})
+
+router.delete('/:id', async ctx => {
+  const id = ctx.params.id
+  let result = {}
+  try {
+    result = await User.findByIdAndDelete(ctx.params.id)
+  } catch (error) {
+    result.error = `delete id ${id} fail.`
+  }
+  ctx.body = result
+})
+
+/**
  * 登陆
  */
 router.post('/login', async (ctx, next) => {
@@ -34,6 +53,9 @@ router.post('/login', async (ctx, next) => {
   ctx.body = result
 })
 
+/**
+ * 用户列表
+ */
 router.get('/list', async ctx => {
   const { size, index, keyword } = ctx.query
   const users = await User.listByKeyword(size, index, keyword)
