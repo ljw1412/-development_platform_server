@@ -2,7 +2,7 @@
 const config = require('../config')
 const jwt = require('jsonwebtoken')
 
-whitelist = [{ path: '/users/.*$' }]
+whitelist = [{ path: '/users/login$', method: 'post' }]
 
 const isInWhitelist = (path, method) => {
   const filterList = whitelist.filter(
