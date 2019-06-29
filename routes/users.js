@@ -44,6 +44,14 @@ router.delete('/:id', async ctx => {
   ctx.body = result
 })
 
+router.get('/user_info', async ctx => {
+  const result = await User.findById(ctx.currentUser.id, {
+    password: 0,
+    salt: 0
+  })
+  ctx.body = result
+})
+
 /**
  * 登陆
  */
