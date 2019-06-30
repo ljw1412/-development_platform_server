@@ -45,11 +45,17 @@ router.delete('/:id', async ctx => {
 })
 
 router.get('/user_info', async ctx => {
-  const result = await User.findById(ctx.currentUser.id, {
+  const user = await User.findById(ctx.currentUser.id, {
     password: 0,
     salt: 0
   })
-  ctx.body = result
+  const roles = await Role.find({})
+  const role = roles.find(item => item.id == user.role)
+  if (role) {
+    user = user.toObject()
+    user.roleName = role.name
+  }
+  ctx.body = user
 })
 
 /**
