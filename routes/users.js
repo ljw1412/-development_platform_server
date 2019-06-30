@@ -45,7 +45,7 @@ router.delete('/:id', async ctx => {
 })
 
 router.get('/user_info', async ctx => {
-  const user = await User.findById(ctx.currentUser.id, {
+  let user = await User.findById(ctx.currentUser.id, {
     password: 0,
     salt: 0
   })
