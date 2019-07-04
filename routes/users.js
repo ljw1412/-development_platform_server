@@ -33,12 +33,27 @@ router.put('/update', async ctx => {
   ctx.body = result
 })
 
+/**
+ * 更新当前用户密码
+ */
 router.put('/update_password', async ctx => {
   const user = { id: ctx.currentUser.id, ...ctx.request.body }
   const result = await User.updatePassword(user)
   ctx.body = result
 })
 
+/**
+ * 更新当前用户信息
+ */
+router.put('/update_info', async ctx => {
+  const user = { id: ctx.currentUser.id, ...ctx.request.body }
+  const result = await User.updateInfo(user)
+  ctx.body = result
+})
+
+/**
+ * 根据 id 删除用户
+ */
 router.delete('/:id', async ctx => {
   const id = ctx.params.id
   let result = {}
@@ -50,6 +65,9 @@ router.delete('/:id', async ctx => {
   ctx.body = result
 })
 
+/**
+ * 获取用户信息
+ */
 router.get('/user_info', async ctx => {
   let user = await User.findById(ctx.currentUser.id, {
     password: 0,

@@ -123,7 +123,7 @@ const updateUser = async function(inputUser) {
   const id = inputUser.id
   if (id) {
     delete inputUser.id
-    if (inputUser.password != '') {
+    if (inputUser.password) {
       const originUser = await this.findById(id)
       if (!originUser) return { error: `User is not exists who's id ${id}.` }
       const { result, salt } = encryptionUtil.aesEncrypt(inputUser.password)
@@ -154,6 +154,10 @@ const updatePassword = async function(inputUser) {
   })
 }
 
+const updateInfo = async function(inputUser) {
+  return await this.updateUser(inputUser)
+}
+
 // 用户分页模糊搜索列表
 const listByKeyword = async function(page, size, keyword) {
   if (!page || !size) return { error: 'Missing field "page" or "size".' }
@@ -176,6 +180,7 @@ Object.assign(UserSchema.statics, {
   register,
   updateUser,
   updatePassword,
+  updateInfo,
   listByKeyword
 })
 
