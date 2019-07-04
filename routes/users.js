@@ -33,6 +33,12 @@ router.put('/update', async ctx => {
   ctx.body = result
 })
 
+router.put('/update_password', async ctx => {
+  const user = { id: ctx.currentUser.id, ...ctx.request.body }
+  const result = await User.updatePassword(user)
+  ctx.body = result
+})
+
 router.delete('/:id', async ctx => {
   const id = ctx.params.id
   let result = {}

@@ -120,14 +120,38 @@ const register = async function(inputUser) {
  * @param inputUser 输入的用户对象
  */
 const updateUser = async function(inputUser) {
-  const { id, username, password, email, nickname, role } = inputUser
+  const id = inputUser.id
   if (id) {
-    const user = { username, email, nickname, role }
-    if (password) user.password = password
-    return this.findByIdAndUpdate(id, user)
+    delete inputUser.id
+    if (inputUser.password != '') {
+      const originUser = await this.findById(id)
+      if (!originUser) return { error: `User is not exists who's id ${id}.` }
+      const { result, salt } = encryptionUtil.aesEncrypt(inputUser.password)
+      inputUser.password = result
+      inputUser.salt = salt
+    } else {
+      delete inputUser.password
+    }
+    await this.findByIdAndUpdate(id, inputUser)
+    return { message: `User is updated who's id ${id}` }
   } else {
     return this.register(inputUser)
   }
+}
+
+/**
+ * 修改密码
+ * @param inputUser
+ */
+const updatePassword = async function(inputUser) {
+  const user = await this.findById(inputUser.id)
+  if (!user) return { error: `Not Found Userid ${id}.` }
+  const { result } = encryptionUtil.aesEncrypt(inputUser.password, user.salt)
+  if (user.password != result) return { error: 'current password is wrong.' }
+  return await this.updateUser({
+    id: inputUser.id,
+    password: inputUser.modifyPassword
+  })
 }
 
 // 用户分页模糊搜索列表
@@ -151,6 +175,7 @@ Object.assign(UserSchema.statics, {
   checkExists,
   register,
   updateUser,
+  updatePassword,
   listByKeyword
 })
 
