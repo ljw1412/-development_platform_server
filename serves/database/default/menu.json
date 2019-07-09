@@ -6,6 +6,12 @@
     "route": { "name": "main" }
   },
   {
+    "icon": "el-icon-guide",
+    "image": "",
+    "title": "项目管理",
+    "route": { "name": "project" }
+  },
+  {
     "icon": "el-icon-setting",
     "image": "",
     "title": "平台设置",

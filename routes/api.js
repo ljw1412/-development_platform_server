@@ -17,7 +17,7 @@ router.post('/reset_menu', async ctx => {
 })
 
 router.get('/list_all_menu', async ctx => {
-  const menuList = await Menu.find({})
+  const menuList = await Menu.find({}).sort({ _id: 1 })
   ctx.body = menuList
 })
 
