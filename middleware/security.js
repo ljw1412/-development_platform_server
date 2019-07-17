@@ -16,7 +16,7 @@ const isInWhitelist = (path, method) => {
 module.exports = async (ctx, next) => {
   if (isInWhitelist(ctx.path, ctx.method)) return await next()
 
-  const auth = ctx.headers.authorization
+  const auth = ctx.cookies.get('token')
   if (!auth) {
     return ctx.throw(401, 'Unauthorized.')
   }

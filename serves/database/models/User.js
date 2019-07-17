@@ -74,7 +74,7 @@ const login = async function(loginName, password) {
     user.lastLoginDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
     await user.save()
     const token = jwt.sign({ id: user.id }, config.SECRET_KEY, {
-      expiresIn: '7 days'
+      expiresIn: '5 days'
     })
     return {
       id: user.id,

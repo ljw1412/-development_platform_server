@@ -34,7 +34,6 @@ app.use(helmet())
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
-app.use(require('koa-compress')({ threshold: 2048 }))
 
 // 请求安全性
 app.use(security)
