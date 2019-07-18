@@ -3,7 +3,7 @@
     "icon": "el-icon-s-home",
     "image": "",
     "title": "首页",
-    "route": { "name": "main" }
+    "route": { "name": "home" }
   },
   {
     "icon": "el-icon-guide",
