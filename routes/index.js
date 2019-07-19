@@ -14,13 +14,11 @@ router.get('/system', async ctx => {
       hostname: systemUtil.getHostname()
     })
   } else if (action === 'state') {
-    console.log(systemUtil)
-
     Object.assign(info, {
       loadAvg: systemUtil.getLoadAvg(),
       uptime: systemUtil.getUptime(),
       memory: systemUtil.getMemory(),
-      cpu: systemUtil.getCpu(),
+      cpus: systemUtil.getCpu(),
       networkInterfaces: systemUtil.getNetworkInterfaces()
     })
   }
