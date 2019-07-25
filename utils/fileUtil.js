@@ -36,4 +36,14 @@ const listDir = async (path, displayHidden = false) => {
   }
 }
 
-module.exports = { listDir }
+const formatFileSize = size => {
+  const unitList = ['B', 'KB', 'MB', 'GB', 'PB']
+  let i = 0
+  while (size / 1024 > 1) {
+    size /= 1024
+    i++
+  }
+  return size.toFixed(2) + unitList[i]
+}
+
+module.exports = { listDir, formatFileSize }

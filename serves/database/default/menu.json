@@ -12,6 +12,12 @@
     "route": { "name": "project" }
   },
   {
+    "icon": "el-icon-s-operation",
+    "image": "",
+    "title": "PM2",
+    "route": { "name": "PM2" }
+  },
+  {
     "icon": "el-icon-setting",
     "image": "",
     "title": "平台设置",
