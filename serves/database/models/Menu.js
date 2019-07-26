@@ -52,5 +52,6 @@ const reset = async function() {
 }
 
 Object.assign(MenuSchema.statics, { initData, reset })
+const Menu = mongoose.model('Menu', MenuSchema)
 
-module.exports = mongoose.model('Menu', MenuSchema)
+module.exports = Menu
