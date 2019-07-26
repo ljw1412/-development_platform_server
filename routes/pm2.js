@@ -23,7 +23,7 @@ router.get('/list', async ctx => {
       version: item.pm2_env.version,
       watch: item.pm2_env.watch,
       path: item.pm2_env.pm_exec_path,
-      isProtected: item.pm2_env.PWD === process.env.PWD
+      protected: item.pm2_env.PWD === process.env.PWD
     }))
   } catch (error) {
     result.error = error

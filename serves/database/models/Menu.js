@@ -34,7 +34,7 @@ const initData = async function() {
     const setting = require('../default/menu.json')
     setting.map(item => {
       if (item.children && item.children.length) {
-        item.children = item.children.map(el => new Menu(el))
+        item.children = item.children.map(el => this(el))
       }
       return item
     })
@@ -52,6 +52,5 @@ const reset = async function() {
 }
 
 Object.assign(MenuSchema.statics, { initData, reset })
-const Menu = mongoose.model('Menu', MenuSchema)
 
-module.exports = Menu
+module.exports = mongoose.model('Menu', MenuSchema)
