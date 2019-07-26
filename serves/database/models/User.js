@@ -116,7 +116,7 @@ const register = async function(inputUser) {
 }
 
 /**
- * 更新用户 无 id 则创建
+ * 新增/更新用户 无 id 则创建
  * @param inputUser 输入的用户对象
  */
 const updateUser = async function(inputUser) {
@@ -154,6 +154,10 @@ const updatePassword = async function(inputUser) {
   })
 }
 
+/**
+ * 修改用户信息
+ * @param inputUser
+ */
 const updateInfo = async function(inputUser) {
   return await this.updateUser(inputUser)
 }
@@ -184,4 +188,4 @@ Object.assign(UserSchema.statics, {
   listByKeyword
 })
 
-const User = mongoose.model('User', UserSchema)
+module.exports = mongoose.model('User', UserSchema)

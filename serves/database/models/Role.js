@@ -38,5 +38,5 @@ const initData = async function() {
 }
 
 Object.assign(RoleSchema.statics, { initData })
-const Role = mongoose.model('Role', RoleSchema)
-Role.initData()
+
+module.exports = mongoose.model('Role', RoleSchema)
