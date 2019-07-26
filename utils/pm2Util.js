@@ -1,4 +1,6 @@
 const pm2 = require('pm2')
+const fileUtil = require('../utils/fileUtil')
+const moment = require('moment')
 
 const callback = (resolve, reject) => (err, data) => {
   if (err) reject(err)
@@ -44,3 +46,19 @@ module.exports.delete = process =>
   new Promise((resolve, reject) => {
     pm2.delete(process, callback(resolve, reject))
   })
+
+module.exports.formatProcessDescription = item => ({
+  pid: item.pid,
+  name: item.name,
+  pmid: item.pm_id,
+  memory: fileUtil.formatFileSize(item.monit.memory),
+  cpu: item.monit.cpu + '%',
+  createTime: item.pm2_env.created_at,
+  uptime: moment(item.pm2_env.pm_uptime).fromNow(true),
+  restartTime: item.pm2_env.restart_time,
+  status: item.pm2_env.status,
+  version: item.pm2_env.version,
+  watch: item.pm2_env.watch,
+  path: item.pm2_env.pm_exec_path,
+  protected: item.pm2_env.PWD === process.env.PWD
+})
