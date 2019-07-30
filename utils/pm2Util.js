@@ -60,5 +60,5 @@ module.exports.formatProcessDescription = item => ({
   version: item.pm2_env.version,
   watch: item.pm2_env.watch,
   path: item.pm2_env.pm_exec_path,
-  protected: item.pm2_env.PWD === process.env.PWD
+  protect: item.pm2_env.PWD === process.env.PWD
 })
