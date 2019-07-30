@@ -1,6 +1,7 @@
 const pm2 = require('pm2')
 const fileUtil = require('../utils/fileUtil')
 const moment = require('moment')
+const fsp = require('fs').promises
 
 const callback = (resolve, reject) => (err, data) => {
   if (err) reject(err)
@@ -62,3 +63,15 @@ module.exports.formatProcessDescription = item => ({
   path: item.pm2_env.pm_exec_path,
   protect: item.pm2_env.PWD === process.env.PWD
 })
+
+module.exports.readLog = async (id, lineNum = -15) => {
+  const data = await this.describe(id)
+  const { pm_out_log_path, pm_err_log_path } = data[0].pm2_env
+  const logs = await fsp.readFile(pm_out_log_path, 'utf8')
+  const line = logs.split('\n')
+  // console.log(pm_out_log_path, pm_err_log_path)
+  return {
+    line: line.slice(lineNum, line.length - 1),
+    lineNum: line.length - 1
+  }
+}

@@ -24,4 +24,10 @@ router.post('/action', async ctx => {
   ctx.body = proc
 })
 
+router.get('/logs', async ctx => {
+  let { id, lineNum } = ctx.query
+  if (!lineNum) lineNum = -15
+  ctx.body = await pm2Util.readLog(id, lineNum)
+})
+
 module.exports = router
