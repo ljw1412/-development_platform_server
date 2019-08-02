@@ -2,9 +2,6 @@ const router = require('koa-router')()
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Role = mongoose.model('Role')
-const config = require('../config')
-const encryptionUtil = require('../utils/encryptionUtil')
-const jwt = require('jsonwebtoken')
 
 router.prefix('/users')
 

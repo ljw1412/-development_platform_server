@@ -8,47 +8,47 @@ const callback = (resolve, reject) => (err, data) => {
   return resolve(data)
 }
 
-module.exports.list = () =>
+exports.list = () =>
   new Promise((resolve, reject) => {
     pm2.list(callback(resolve, reject))
   })
 
-module.exports.describe = process =>
+exports.describe = process =>
   new Promise((resolve, reject) => {
     pm2.describe(process, callback(resolve, reject))
   })
 
-module.exports.start = options =>
+exports.start = options =>
   new Promise((resolve, reject) => {
     pm2.start(options, callback(resolve, reject))
   })
 
-module.exports.start = (script, options) =>
+exports.start = (script, options) =>
   new Promise((resolve, reject) => {
     pm2.start(script, options, callback(resolve, reject))
   })
 
-module.exports.stop = process =>
+exports.stop = process =>
   new Promise((resolve, reject) => {
     pm2.stop(process, callback(resolve, reject))
   })
 
-module.exports.reload = process =>
+exports.reload = process =>
   new Promise((resolve, reject) => {
     pm2.reload(process, callback(resolve, reject))
   })
 
-module.exports.restart = process =>
+exports.restart = process =>
   new Promise((resolve, reject) => {
     pm2.restart(process, callback(resolve, reject))
   })
 
-module.exports.delete = process =>
+exports.delete = process =>
   new Promise((resolve, reject) => {
     pm2.delete(process, callback(resolve, reject))
   })
 
-module.exports.formatProcessDescription = item => ({
+exports.formatProcessDescription = item => ({
   pid: item.pid,
   name: item.name,
   pmid: item.pm_id,
@@ -64,7 +64,7 @@ module.exports.formatProcessDescription = item => ({
   protect: item.pm2_env.PWD === process.env.PWD
 })
 
-module.exports.readLog = async (id, lineNum = -15) => {
+exports.readLog = async (id, lineNum = -15) => {
   const data = await this.describe(id)
   const { pm_out_log_path, pm_err_log_path } = data[0].pm2_env
   const logs = await fsp.readFile(pm_out_log_path, 'utf8')
