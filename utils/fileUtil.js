@@ -36,9 +36,9 @@ const listDir = async (path, displayHidden = false) => {
   }
 }
 
-const formatFileSize = size => {
+const formatFileSize = (size, index = 0) => {
   const unitList = ['B', 'KB', 'MB', 'GB', 'PB']
-  let i = 0
+  let i = index
   while (size / 1024 > 1) {
     size /= 1024
     i++

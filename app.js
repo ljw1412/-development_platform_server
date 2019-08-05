@@ -1,6 +1,5 @@
 const Koa = require('koa')
 const app = new Koa()
-const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
@@ -9,7 +8,6 @@ const cors = require('kcors')
 const helmet = require('koa-helmet')
 const security = require('./middleware/security')
 const apiError = require('./middleware/apiError')
-const config = require('./config')
 
 // Initialize the database 初始化数据库
 require('./serves/database')
