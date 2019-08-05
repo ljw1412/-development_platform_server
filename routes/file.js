@@ -4,8 +4,9 @@ const fileUtil = require('../utils/fileUtil')
 router.prefix('/file')
 
 router.get('/', async (ctx, next) => {
-  const { path } = ctx.query
-  const result = await fileUtil.listDir(path)
+  let { path, onlyDir } = ctx.query
+  onlyDir = onlyDir === 'true'
+  const result = await fileUtil.listDir({ path, onlyDir })
   ctx.body = result
 })
 

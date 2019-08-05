@@ -6,7 +6,7 @@ const getFileType = stats => {
   return stats.isDirectory() ? 'dir' : stats.isFile() ? 'file' : 'other'
 }
 
-const listDir = async (path, displayHidden = false) => {
+const listDir = async ({ path, onlyDir = false, displayHidden = false }) => {
   try {
     await fsp.access(path)
     const filenameList = await fsp.readdir(path)
@@ -19,7 +19,9 @@ const listDir = async (path, displayHidden = false) => {
         const fileStats = await fsp.stat(pth.join(path, name))
         fileStats.type = getFileType(fileStats)
         fileStats.name = name
-        fileList.push(fileStats)
+        if (!onlyDir || (onlyDir && fileStats.type === 'dir')) {
+          fileList.push(fileStats)
+        }
       } catch (error) {}
     }
     return [
