@@ -6,6 +6,13 @@ const getFileType = stats => {
   return stats.isDirectory() ? 'dir' : stats.isFile() ? 'file' : 'other'
 }
 
+/**
+ * 获取指定路径下的文件或文件夹
+ * @param object
+ * path 指定路径
+ * onlyDir 是否只获取文件夹
+ * displayHidden 是否显示隐藏文件
+ */
 const listDir = async ({ path, onlyDir = false, displayHidden = false }) => {
   try {
     await fsp.access(path)
@@ -38,6 +45,13 @@ const listDir = async ({ path, onlyDir = false, displayHidden = false }) => {
   }
 }
 
+const isExists = path => fsp.access(path, fs.constants.F_OK)
+
+/**
+ * 格式化文件大小
+ * @param {number} size 文件大小
+ * @param {number} index 传入大小为哪个单位的 0为 B (字节)
+ */
 const formatFileSize = (size, index = 0) => {
   const unitList = ['B', 'KB', 'MB', 'GB', 'PB']
   let i = index
