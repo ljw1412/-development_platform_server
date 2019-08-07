@@ -1,5 +1,6 @@
 // The fs.promises API is experimental
-const fsp = require('fs').promises
+const fs = require('fs')
+const fsp = fs.promises
 const pth = require('path')
 
 const getFileType = stats => {
@@ -62,4 +63,4 @@ const formatFileSize = (size, index = 0) => {
   return size.toFixed(2) + unitList[i]
 }
 
-module.exports = { listDir, formatFileSize }
+module.exports = { listDir, formatFileSize, isExists }
