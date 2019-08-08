@@ -1,7 +1,7 @@
-const mongoose = require('mongoose'),
-  Schema = mongoose.Schema
+const BaseSchema = require('./BaseSchema')
+const mongoose = require('mongoose')
 
-const RoleSchema = new Schema(
+const RoleSchema = new BaseSchema(
   {
     name: String,
     tag: String,

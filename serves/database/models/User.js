@@ -1,59 +1,40 @@
+const BaseSchema = require('./BaseSchema')
 const mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  ObjectId = Schema.Types.ObjectId
+  ObjectId = mongoose.Schema.Types.ObjectId
 const moment = require('moment')
 const config = require('../../../config')
 const encryptionUtil = require('../../../utils/encryptionUtil')
 const jwt = require('jsonwebtoken')
 
-const UserSchema = new Schema(
-  {
-    // 用户名
-    username: { type: String, trim: true },
-    // 昵称
-    nickname: { type: String, trim: true },
-    // 邮箱
-    email: { type: String, trim: true },
-    // 密码 (AES 加密)
-    password: { type: String },
-    // 密码盐
-    salt: { type: String },
-    // 身份
-    role: { type: ObjectId, ref: 'Role' },
-    // 创建日期
-    createDateTime: {
-      type: String,
-      default: moment().format('YYYY-MM-DD HH:mm:ss')
-    },
-    // 最后修改时间
-    updateDateTime: {
-      type: String,
-      default: moment().format('YYYY-MM-DD HH:mm:ss')
-    },
-    // 最后登录时间
-    lastLoginDateTime: {
-      type: String,
-      default: '1970-01-01 00:00:00'
-    }
+const UserSchema = new BaseSchema({
+  // 用户名
+  username: { type: String, trim: true },
+  // 昵称
+  nickname: { type: String, trim: true },
+  // 邮箱
+  email: { type: String, trim: true },
+  // 密码 (AES 加密)
+  password: { type: String },
+  // 密码盐
+  salt: { type: String },
+  // 身份
+  role: { type: ObjectId, ref: 'Role' },
+  // 创建日期
+  createDateTime: {
+    type: String,
+    default: moment().format('YYYY-MM-DD HH:mm:ss')
   },
-  {
-    versionKey: false,
-    toObject: {
-      getters: true,
-      transform: function(doc, ret, options) {
-        delete ret._id
-        return ret
-      }
-    },
-    toJSON: {
-      getters: true,
-      transform: function(doc, ret, options) {
-        delete ret._id
-        return ret
-      }
-    }
+  // 最后修改时间
+  updateDateTime: {
+    type: String,
+    default: moment().format('YYYY-MM-DD HH:mm:ss')
+  },
+  // 最后登录时间
+  lastLoginDateTime: {
+    type: String,
+    default: '1970-01-01 00:00:00'
   }
-)
+})
 
 // 重写 mongoose 的默认方法会造成无法预料的结果。
 // 不要在自定义方法中使用 ES6 箭头函数，会造成 this 指向错误。

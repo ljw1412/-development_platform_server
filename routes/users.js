@@ -106,4 +106,12 @@ router.get('/list', async ctx => {
   })
 })
 
+/**
+ * 查询用户权限列表
+ */
+router.get('/roleslist', async ctx => {
+  const roles = await Role.find({ isHide: { $not: { $eq: true } } })
+  ctx.body = roles
+})
+
 module.exports = router

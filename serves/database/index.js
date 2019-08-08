@@ -18,6 +18,7 @@ db.once('open', async () => {
 const Menu = require('./models/Menu')
 const Role = require('./models/Role')
 const User = require('./models/User')
+const Project = require('./models/Project')
 const addSuperAdmin = async () => {
   const role = await Role.findOne({ tag: 'superadmin' })
   const count = await User.countDocuments({ role: role.id })

@@ -1,32 +1,18 @@
-const mongoose = require('mongoose'),
-  Schema = mongoose.Schema
+const BaseSchema = require('./BaseSchema')
+const mongoose = require('mongoose')
 
-const MenuSchema = new Schema(
-  {
-    icon: String,
-    image: String,
-    title: String,
-    route: { path: String, name: String },
-    children: []
-  },
-  {
-    versionKey: false,
-    toObject: {
-      getters: true,
-      transform: function(doc, ret, options) {
-        delete ret._id
-        return ret
-      }
-    },
-    toJSON: {
-      getters: true,
-      transform: function(doc, ret, options) {
-        delete ret._id
-        return ret
-      }
-    }
-  }
-)
+const MenuSchema = new BaseSchema({
+  // element-ui 中的 icon 图标名称
+  icon: String,
+  // 自定义图标的 url
+  image: String,
+  // 菜单栏标题
+  title: String,
+  // 菜单栏路由
+  route: { path: String, name: String },
+  // 菜单栏的二级
+  children: []
+})
 
 const initData = async function() {
   const count = await this.countDocuments({})
