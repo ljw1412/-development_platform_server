@@ -2,7 +2,8 @@ const BaseSchema = require('./BaseSchema')
 const mongoose = require('mongoose')
 
 const PROJECT_STATE_NOT_INIT = 0
-const PROJECT_STATE_INITED = 1
+const PROJECT_STATE_INITING = 1
+const PROJECT_STATE_INITED = 2
 
 const ProjectSchema = new BaseSchema({
   // 项目名称

@@ -8,6 +8,11 @@ router.get('/list', async (ctx, next) => {
   ctx.body = await Project.find()
 })
 
+router.get('/details', async (ctx, next) => {
+  const { id } = ctx.query
+  ctx.body = await Project.findById(id)
+})
+
 router.put('/save', async ctx => {
   const project = ObjectUtil.only(
     ctx.request.body,
