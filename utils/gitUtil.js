@@ -18,3 +18,12 @@ exports.isVaildRepository = async url => {
   }
   return { valid: false, out: 'format is incorrect' }
 }
+
+exports.cloneRepository = async (path, url) => {
+  try {
+    const { stdout, stderr } = await execFile('git', ['clone', url, path])
+    return { message: stdout || stderr }
+  } catch (error) {
+    return { error }
+  }
+}

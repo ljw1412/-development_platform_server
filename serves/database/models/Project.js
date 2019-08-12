@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const PROJECT_STATE_NOT_INIT = 0
 const PROJECT_STATE_INITING = 1
 const PROJECT_STATE_INITED = 2
+const PROJECT_STATE_ERROR = 3
 
 const ProjectSchema = new BaseSchema({
   // 项目名称
