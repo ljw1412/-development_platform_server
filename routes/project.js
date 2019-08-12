@@ -2,6 +2,7 @@ const router = require('koa-router')()
 const Project = require('../serves/database/models/Project')
 const ObjectUtil = require('../utils/objectUtil')
 const GitUtil = require('../utils/gitUtil')
+const config = require('../config')
 
 router.prefix('/project')
 
@@ -31,11 +32,17 @@ router.get('/checkGitValid', async ctx => {
 router.post('/init', async ctx => {
   const { id } = ctx.request.body
   const project = await Project.findById(id)
-  let result = { error: 'not found project.' }
-  if (project) {
-    result = await GitUtil.cloneRepository(project.path, project.git)
+  let result = { error: 'Not found project.' }
+  if (project && project.state === 0) {
+    if (config.ENABLE_GIT_CLONE) {
+      result = await GitUtil.cloneRepository(project.path, project.git)
+    } else {
+      result = { message: '"git clone" is forbidden.' }
+    }
     project.state = 2
     project.save()
+  } else {
+    result = { error: 'The project has been inited.' }
   }
   ctx.body = result
 })

@@ -4,5 +4,7 @@ module.exports = {
   // mongodb host
   MONGODB_HOST: 'mongodb://localhost',
   // jsonwebtoken 加密用的 key
-  SECRET_KEY: '0'
+  SECRET_KEY: '0',
+  // 运行使用 git clone
+  ENABLE_GIT_CLONE: true
 }
