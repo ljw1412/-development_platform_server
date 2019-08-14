@@ -1,7 +1,6 @@
 const router = require('koa-router')()
 const mongoose = require('mongoose')
 const Menu = mongoose.model('Menu')
-const config = require('../config')
 
 router.prefix('/api')
 

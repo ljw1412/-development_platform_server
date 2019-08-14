@@ -2,6 +2,8 @@
 const fs = require('fs')
 const fsp = fs.promises
 const pth = require('path')
+const util = require('util')
+const execFile = util.promisify(require('child_process').execFile)
 
 const getFileType = stats => {
   return stats.isDirectory() ? 'dir' : stats.isFile() ? 'file' : 'other'
@@ -46,7 +48,19 @@ const listDir = async ({ path, onlyDir = false, displayHidden = false }) => {
   }
 }
 
-const isExists = path => fsp.access(path, fs.constants.F_OK)
+const isExists = async path => await fsp.access(path, fs.constants.F_OK)
+
+const removeDir = async path => {
+  const stats = await fsp.stat(path)
+  if (!stats.isDirectory()) return { error: `path: ${path} is not a directory` }
+  try {
+    // 必须是空文件夹
+    await fsp.rmdir(path)
+    return { error: null }
+  } catch (error) {
+    return { error: `failure deletion of ${path}` }
+  }
+}
 
 /**
  * 格式化文件大小
@@ -63,4 +77,4 @@ const formatFileSize = (size, index = 0) => {
   return size.toFixed(2) + unitList[i]
 }
 
-module.exports = { listDir, formatFileSize, isExists }
+module.exports = { listDir, formatFileSize, isExists, removeDir }

@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
-const config = require('../../config')
 
 mongoose.Promise = global.Promise
 
-mongoose.connect(`${config.MONGODB_HOST}/dev_platform`, {
+mongoose.connect(`${global.config.MONGODB_HOST}/dev_platform`, {
   useNewUrlParser: true,
   useFindAndModify: false
 })

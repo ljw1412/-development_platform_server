@@ -2,7 +2,6 @@ const BaseSchema = require('./BaseSchema')
 const mongoose = require('mongoose'),
   ObjectId = mongoose.Schema.Types.ObjectId
 const moment = require('moment')
-const config = require('../../../config')
 const encryptionUtil = require('../../../utils/encryptionUtil')
 const jwt = require('jsonwebtoken')
 
@@ -54,7 +53,7 @@ const login = async function(loginName, password) {
   if (user.password === result) {
     user.lastLoginDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
     await user.save()
-    const token = jwt.sign({ id: user.id }, config.SECRET_KEY, {
+    const token = jwt.sign({ id: user.id }, global.config.SECRET_KEY, {
       expiresIn: '5 days'
     })
     return {

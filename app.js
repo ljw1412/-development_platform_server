@@ -9,6 +9,9 @@ const helmet = require('koa-helmet')
 const security = require('./middleware/security')
 const apiError = require('./middleware/apiError')
 
+// 全局注入配置
+global.config = require('./config')
+
 // Initialize the database 初始化数据库
 require('./serves/database')
 
