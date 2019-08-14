@@ -29,6 +29,8 @@ Object.assign(ProjectSchema.statics, {
   insertOrUpdateProject: async function(project) {
     if (project.id) {
       // 修改
+      await this.findByIdAndUpdate(project.id, project)
+      return { message: 'rename successful.' }
     } else {
       // 插入
       project.state = PROJECT_STATE_NOT_INIT

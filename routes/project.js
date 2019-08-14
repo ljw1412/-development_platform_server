@@ -14,7 +14,7 @@ router.get('/details', async (ctx, next) => {
   ctx.body = await Project.findById(id)
 })
 
-router.put('/save', async ctx => {
+router.post('/save', async ctx => {
   const project = ObjectUtil.only(
     ctx.request.body,
     'id name origin git path description'
