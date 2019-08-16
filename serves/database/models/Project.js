@@ -1,8 +1,6 @@
 const BaseSchema = require('./BaseSchema')
 const mongoose = require('mongoose')
 const GitUtil = require('../../../utils/gitUtil')
-const FileUtil = require('../../../utils/fileUtil')
-const fsp = require('fs').promises
 
 const PROJECT_STATE_NOT_INIT = 0
 const PROJECT_STATE_INITING = 1
@@ -30,7 +28,7 @@ Object.assign(ProjectSchema.statics, {
     if (project.id) {
       // 修改
       await this.findByIdAndUpdate(project.id, project)
-      return { message: 'rename successful.' }
+      return { message: 'rename successful.', id: project.id }
     } else {
       // 插入
       project.state = PROJECT_STATE_NOT_INIT
