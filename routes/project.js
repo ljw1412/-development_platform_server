@@ -47,12 +47,12 @@ router.post('/save', async ctx => {
   )
   const result = await Project.insertOrUpdateProject(project)
 
-  const projectLog = new ProjectLog()
-  projectLog.id = project.id || result.id
-  projectLog.title = project.id ? '项目属性更新' : '创建项目'
-  projectLog.unix = new Date().getTime()
-  projectLog.log = JSON.stringify(project)
-  projectLog.save()
+  ProjectLog.create({
+    projectId: project.id || result.id,
+    title: project.id ? '项目属性更新' : '创建项目',
+    unix: new Date().getTime(),
+    log: JSON.stringify(project)
+  })
 
   ctx.body = result
 })
@@ -63,6 +63,12 @@ router.post('/save', async ctx => {
 router.post('/init', async ctx => {
   const { id } = ctx.request.body
   ctx.body = await Project.initProject(id)
+
+  ProjectLog.create({
+    projectId: id,
+    title: '初始化项目',
+    unix: new Date().getTime()
+  })
 })
 
 /**
@@ -72,6 +78,12 @@ router.post('/delete', async ctx => {
   let { id, isDeletePath } = ctx.request.body
   isDeletePath = isDeletePath === 'true'
   ctx.body = await Project.deleteProject(id, isDeletePath)
+
+  ProjectLog.create({
+    projectId: id,
+    title: '删除项目',
+    unix: new Date().getTime()
+  })
 })
 
 module.exports = router
