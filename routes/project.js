@@ -3,6 +3,7 @@ const Project = require('../serves/database/models/Project')
 const ProjectLog = require('../serves/database/models/ProjectLog')
 const ObjectUtil = require('../utils/objectUtil')
 const GitUtil = require('../utils/gitUtil')
+const git = require('simple-git/promise')
 
 router.prefix('/project')
 

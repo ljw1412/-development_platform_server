@@ -1,3 +1,4 @@
+const git = require('simple-git/promise')
 const util = require('util')
 const execFile = util.promisify(require('child_process').execFile)
 
@@ -8,21 +9,20 @@ const GIT_URL_REGEX = /^(git|https?).*\.git$/
  * @param {*} url Repository Url
  */
 exports.isVaildRepository = async url => {
-  if (GIT_URL_REGEX.test(url)) {
-    try {
-      const { stdout } = await execFile('git', ['ls-remote', url])
-      return { valid: true, out: stdout }
-    } catch ({ stderr }) {
-      return { valid: false, out: stderr }
-    }
+  // if (!GIT_URL_REGEX.test(url))
+  //   return { valid: false, out: `repository '${url}' format is incorrect` }
+  try {
+    await git().listRemote([url])
+    return { valid: true, out: '' }
+  } catch (error) {
+    return { valid: false, out: `repository '${url}' not found` }
   }
-  return { valid: false, out: 'format is incorrect' }
 }
 
 exports.cloneRepository = async (path, url) => {
   try {
-    const { stdout, stderr } = await execFile('git', ['clone', url, path])
-    return { message: stdout || stderr }
+    await git().clone(url, path)
+    return { message: `repository '${url}' cloned to '${path}'.` }
   } catch (error) {
     return { error }
   }

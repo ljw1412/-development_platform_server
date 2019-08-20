@@ -41,12 +41,12 @@ Object.assign(ProjectSchema.statics, {
     if (!project) return { error: 'Not found project.' }
     if (project.state !== 0) return { error: 'The project has been inited.' }
     project.state = PROJECT_STATE_INITING
-    project.save()
+    await project.save()
     const result = global.config.ENABLE_GIT_CLONE
       ? await GitUtil.cloneRepository(project.path, project.git)
       : { message: '"git clone" is forbidden.' }
     project.state = result.error ? PROJECT_STATE_NOT_INIT : PROJECT_STATE_INITED
-    project.save()
+    await project.save()
     return result
   },
   // 删除项目

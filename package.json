@@ -23,7 +23,8 @@
     "koa-static": "^5.0.0",
     "moment": "^2.24.0",
     "mongoose": "^5.6.9",
-    "pm2": "^3.5.1"
+    "pm2": "^3.5.1",
+    "simple-git": "^1.124.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
