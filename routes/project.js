@@ -27,7 +27,7 @@ router.get('/list', async (ctx, next) => {
  */
 router.get('/details', async (ctx, next) => {
   const { id } = ctx.query
-  ctx.body = await Project.findById(id)
+  ctx.body = await Project.findProjectById(id)
 })
 
 /**

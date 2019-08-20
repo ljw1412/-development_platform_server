@@ -49,6 +49,15 @@ Object.assign(ProjectSchema.statics, {
     await project.save()
     return result
   },
+  // 查询项目
+  findProjectById: async function(id) {
+    let project = await this.findById(id)
+    if (project) {
+      project = project.toObject()
+      project.status = await GitUtil.statusRepository(project.path)
+    }
+    return project
+  },
   // 删除项目
   deleteProject: async function(id, isDeletePath = false) {
     const project = await this.findById(id)
