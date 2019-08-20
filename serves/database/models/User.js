@@ -1,6 +1,7 @@
 const BaseSchema = require('./BaseSchema')
 const mongoose = require('mongoose'),
   ObjectId = mongoose.Schema.Types.ObjectId
+const Role = require('./Role')
 const moment = require('moment')
 const encryptionUtil = require('../../../utils/encryptionUtil')
 const jwt = require('jsonwebtoken')
@@ -74,6 +75,23 @@ const checkExists = async function(prop, value) {
   const count = await this.countDocuments({ [prop]: value })
   return !!count
 }
+
+/**
+ * 根据 id 查询用户
+ * @param string id
+ */
+const findUserById = async function(id, hidePassword = true) {
+  const option = hidePassword ? { password: 0, salt: 0 } : {}
+  let user = await this.findById(id, option)
+  if (!user) return { error: `id: ${id} is not found.` }
+  user = user.toObject()
+  if (!user.role) user.roleName = ''
+  const role = await Role.findById(user.role)
+  user.roleName = role ? role.name : ''
+  user.roleTag = role ? role.tag : ''
+  return user
+}
+
 /**
  * 注册
  * @param inputUser :Object 输入的用户对象
@@ -161,6 +179,7 @@ const listByKeyword = async function(page, size, keyword) {
 Object.assign(UserSchema.statics, {
   login,
   checkExists,
+  findUserById,
   register,
   updateUser,
   updatePassword,

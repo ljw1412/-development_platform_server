@@ -1,5 +1,6 @@
 /* 安全性校验中间件 */
 const jwt = require('jsonwebtoken')
+const User = require('../serves/database/models/User')
 
 whitelist = [{ path: '/users/login$', method: 'post' }]
 
@@ -22,7 +23,11 @@ module.exports = async (ctx, next) => {
   let user = {}
   try {
     user = jwt.verify(auth, global.config.SECRET_KEY)
+    const userInDB = await User.findUserById(user.id)
+    if (userInDB.error) throw new Error(userInDB.error)
+    user = userInDB
   } catch (error) {
+    console.error(error)
     return ctx.throw(403, 'Invalid token.')
   }
   ctx.currentUser = user

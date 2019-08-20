@@ -66,17 +66,7 @@ router.delete('/:id', async ctx => {
  * 获取用户信息
  */
 router.get('/user_info', async ctx => {
-  let user = await User.findById(ctx.currentUser.id, {
-    password: 0,
-    salt: 0
-  })
-  const roles = await Role.find({})
-  const role = roles.find(item => item.id == user.role)
-  if (role) {
-    user = user.toObject()
-    user.roleName = role.name
-  }
-  ctx.body = user
+  ctx.body = ctx.currentUser
 })
 
 /**
