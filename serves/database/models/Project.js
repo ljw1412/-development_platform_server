@@ -52,8 +52,9 @@ Object.assign(ProjectSchema.statics, {
   // 查询项目
   findProjectById: async function(id) {
     let project = await this.findById(id)
-    if (project) {
-      project = project.toObject()
+    if (!project) return { error: 'Not found project.' }
+    project = project.toObject()
+    if (project.origin === 'git') {
       project.status = await GitUtil.statusRepository(project.path)
     }
     return project
