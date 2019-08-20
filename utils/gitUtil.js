@@ -32,6 +32,6 @@ exports.statusRepository = async path => {
   try {
     return await git(path).status()
   } catch (error) {
-    return { error }
+    return { error: error.stack }
   }
 }
