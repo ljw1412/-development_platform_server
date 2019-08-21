@@ -35,7 +35,8 @@ router.get('/details', async (ctx, next) => {
  */
 router.get('/timeline', async (ctx, next) => {
   const { id } = ctx.query
-  ctx.body = await ProjectLog.find({ projectId: id }).sort({ unix: -1 })
+
+  ctx.body = await ProjectLog.findLogListById(id)
 })
 
 /**
@@ -50,6 +51,7 @@ router.post('/save', async ctx => {
 
   ProjectLog.create({
     projectId: project.id || result.id,
+    userId: (ctx.currentUser && ctx.currentUser.id) || '',
     title: project.id ? '项目属性更新' : '创建项目',
     unix: new Date().getTime(),
     log: JSON.stringify(project)
@@ -67,6 +69,7 @@ router.post('/init', async ctx => {
 
   ProjectLog.create({
     projectId: id,
+    userId: (ctx.currentUser && ctx.currentUser.id) || '',
     title: '初始化项目',
     unix: new Date().getTime()
   })
@@ -82,6 +85,7 @@ router.post('/delete', async ctx => {
 
   ProjectLog.create({
     projectId: id,
+    userId: (ctx.currentUser && ctx.currentUser.id) || '',
     title: '删除项目',
     unix: new Date().getTime()
   })

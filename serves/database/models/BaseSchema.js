@@ -19,9 +19,11 @@ const baseOptions = {
   }
 }
 
-module.exports = class BaseSchema extends Schema {
+class BaseSchema extends Schema {
   constructor(definition, options) {
     options = Object.assign({}, baseOptions, options)
     super(definition, options)
   }
 }
+
+module.exports = BaseSchema

@@ -1,6 +1,6 @@
 const BaseSchema = require('./BaseSchema')
 const mongoose = require('mongoose'),
-  ObjectId = mongoose.Schema.Types.ObjectId
+  ObjectId = mongoose.Types.ObjectId
 const Role = require('./Role')
 const moment = require('moment')
 const encryptionUtil = require('../../../utils/encryptionUtil')
