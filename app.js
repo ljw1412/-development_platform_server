@@ -7,7 +7,7 @@ const logger = require('koa-logger')
 const cors = require('kcors')
 const helmet = require('koa-helmet')
 const security = require('./middleware/security')
-const apiError = require('./middleware/apiError')
+const handleApi = require('./middleware/handleApi')
 
 // 全局注入配置
 global.config = require('./config')
@@ -38,8 +38,8 @@ app.use(require('koa-static')(__dirname + '/public'))
 
 // 请求安全性
 app.use(security)
-// 接口异常自动500
-app.use(apiError)
+// 接口预处理
+app.use(handleApi)
 
 // routes
 require('./routesLoader')(app, __dirname + '/routes')

@@ -1,6 +1,7 @@
 const BaseSchema = require('./BaseSchema')
 const mongoose = require('mongoose'),
   ObjectId = mongoose.Types.ObjectId
+const { renameId } = require('../../../utils/objectUtil')
 
 const ProjectLogSchema = new BaseSchema({
   // 项目 id
@@ -17,7 +18,13 @@ const ProjectLogSchema = new BaseSchema({
 
 Object.assign(ProjectLogSchema.statics, {
   findLogListById: async function(id) {
-    return await this.aggregate()
+    const logList = await this.findById(id)
+    logList.forEach(item => {
+      if (item.userId) {
+      }
+    })
+    const logList = await this.aggregate()
+      .addFields({ id: '$_id' })
       .lookup({
         from: 'users',
         localField: 'userId',
@@ -25,10 +32,12 @@ Object.assign(ProjectLogSchema.statics, {
         as: 'user'
       })
       .project({
+        _id: 0,
         user: { password: 0, salt: 0 }
       })
       .match({ projectId: new ObjectId(id) })
       .sort({ unix: -1 })
+    return renameId(logList)
   }
 })
 

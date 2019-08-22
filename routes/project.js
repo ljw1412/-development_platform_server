@@ -1,4 +1,5 @@
 const router = require('koa-router')()
+const User = require('../serves/database/models/User')
 const Project = require('../serves/database/models/Project')
 const ProjectLog = require('../serves/database/models/ProjectLog')
 const ObjectUtil = require('../utils/objectUtil')
@@ -35,8 +36,22 @@ router.get('/details', async (ctx, next) => {
  */
 router.get('/timeline', async (ctx, next) => {
   const { id } = ctx.query
+  logList = await ProjectLog.find({ projectId: id }).sort({ unix: -1 })
 
-  ctx.body = await ProjectLog.findLogListById(id)
+  logList = await Promise.all(
+    logList.map(async item => {
+      if (item.userId) {
+        item = item.toObject()
+        item.user = await User.findById(item.userId, {
+          email: 1,
+          username: 1,
+          nickname: 1
+        })
+      }
+      return item
+    })
+  )
+  ctx.body = logList
 })
 
 /**
@@ -65,13 +80,15 @@ router.post('/save', async ctx => {
  */
 router.post('/init', async ctx => {
   const { id } = ctx.request.body
-  ctx.body = await Project.initProject(id)
+  const result = await Project.initProject(id)
+  ctx.body = result
 
   ProjectLog.create({
     projectId: id,
     userId: (ctx.currentUser && ctx.currentUser.id) || '',
-    title: '初始化项目',
-    unix: new Date().getTime()
+    title: `初始化项目(${result.error ? '失败' : '成功'})`,
+    unix: new Date().getTime(),
+    log: result.error ? result.error.stack : result
   })
 })
 
