@@ -18,11 +18,6 @@ const ProjectLogSchema = new BaseSchema({
 
 Object.assign(ProjectLogSchema.statics, {
   findLogListById: async function(id) {
-    const logList = await this.findById(id)
-    logList.forEach(item => {
-      if (item.userId) {
-      }
-    })
     const logList = await this.aggregate()
       .addFields({ id: '$_id' })
       .lookup({

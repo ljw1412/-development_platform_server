@@ -2,6 +2,7 @@ const router = require('koa-router')()
 const User = require('../serves/database/models/User')
 const Project = require('../serves/database/models/Project')
 const ProjectLog = require('../serves/database/models/ProjectLog')
+const ProjectFlow = require('../serves/database/models/ProjectFlow')
 const ObjectUtil = require('../utils/objectUtil')
 const GitUtil = require('../utils/gitUtil')
 const git = require('simple-git/promise')
@@ -105,6 +106,24 @@ router.post('/delete', async ctx => {
     userId: (ctx.currentUser && ctx.currentUser.id) || '',
     title: '删除项目',
     unix: new Date().getTime()
+  })
+})
+
+router.get('/flow/list', async ctx => {
+  const { projectId } = ctx.query
+  ctx.body = await ProjectFlow.find({ projectId })
+})
+
+/**
+ * 创建项目流程
+ */
+router.post('/flow/create', async ctx => {
+  let { projectId, name } = ctx.request.body
+  ctx.body = await ProjectFlow.create({
+    projectId,
+    name,
+    order: 100,
+    nodeCount: 0
   })
 })
 

@@ -1,5 +1,6 @@
 const BaseSchema = require('./BaseSchema')
 const mongoose = require('mongoose')
+const moment = require('moment')
 const GitUtil = require('../../../utils/gitUtil')
 
 const PROJECT_STATE_NOT_INIT = 0
@@ -19,7 +20,12 @@ const ProjectSchema = new BaseSchema({
   // 项目描述
   description: String,
   // 项目状况
-  state: Number
+  state: Number,
+  // 创建日期
+  createDateTime: {
+    type: String,
+    default: moment().format('YYYY-MM-DD HH:mm:ss')
+  }
 })
 
 Object.assign(ProjectSchema.statics, {
