@@ -7,6 +7,10 @@ const ProjectFlowNodeSchema = new BaseSchema({
   projectFlowId: { type: ObjectId, ref: 'ProjectFlow' },
   // 节点名称
   name: String,
+  // 节点类型
+  type: String,
+  // 节点代码
+  code: String,
   parent: { type: ObjectId, ref: 'ProjectFlowNode' },
   children: []
 })
