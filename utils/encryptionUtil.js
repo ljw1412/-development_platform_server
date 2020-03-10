@@ -14,7 +14,7 @@ module.exports = {
    *  使用sha512算法加盐进行hash
    */
   hash512: (str, salt = genRandomString(16)) => {
-    var hash = crypto.createHamc('sha512', salt)
+    var hash = crypto.createHmac('sha512', salt)
     hash.update(str)
     var value = hash.digest('hex')
     return { result: value, salt }
